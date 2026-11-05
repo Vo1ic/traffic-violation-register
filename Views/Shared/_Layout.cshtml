@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f7fb" />
+    <title>@ViewData["Title"] — Реєстр ПДР</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <aside class="sidebar">
+        <a class="brand" asp-controller="Home" asp-action="Index">
+            <span class="brand-mark">П</span>
+            <span><strong>Порядок</strong><small>Реєстр порушень ПДР</small></span>
+        </a>
+        <div class="nav-caption">РОБОЧИЙ ПРОСТІР</div>
+        <nav class="side-nav">
+            <a asp-controller="Home" asp-action="Index"><span class="nav-icon">⌂</span>Огляд</a>
+            <a asp-controller="Violations" asp-action="Index"><span class="nav-icon">▤</span>Справи</a>
+        </nav>
+        <div class="nav-caption">ДОВІДНИКИ</div>
+        <nav class="side-nav">
+            <a asp-controller="Catalog" asp-action="Index" asp-route-kind="inspectors"><span class="nav-icon">◉</span>Інспектори</a>
+            <a asp-controller="Catalog" asp-action="Index" asp-route-kind="vehicles"><span class="nav-icon">▰</span>Транспорт</a>
+            <a asp-controller="Catalog" asp-action="Index" asp-route-kind="articles"><span class="nav-icon">§</span>Статті порушень</a>
+        </nav>
+        <div class="sidebar-bottom">
+            <div class="demo-chip"><span class="pulse"></span> Навчальний режим</div>
+            <a class="github-link" href="https://github.com/Vo1ic" target="_blank" rel="noreferrer">GitHub <span>↗</span></a>
+            <small>Варіант 13 · MVC + Entity Framework</small>
+        </div>
+    </aside>
+    <main class="main-shell">
+        <header class="topbar">
+            <div class="crumb">СИСТЕМА ОБЛІКУ <span>/</span> @ViewData["Title"]</div>
+            <div class="topbar-right"><span class="online-dot"></span> Локальна база даних <span class="avatar">А</span></div>
+        </header>
+        @if (TempData["Notice"] is string notice)
+        {
+            <div class="notice" role="status">@notice</div>
+        }
+        <section class="page-content">
+            @RenderBody()
+        </section>
+        <footer class="footer">Навчальна модель для лабораторних робіт · Варіант 13 <span>Дані зберігаються локально</span></footer>
+    </main>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

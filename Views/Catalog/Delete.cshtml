@@ -1,0 +1,4 @@
+@model CatalogForm
+@{ ViewData["Title"] = (string)ViewBag.Title; }
+<div class="hero-row compact-hero"><div><div class="eyebrow">ДОВІДНИК</div><h1>@ViewBag.Title?</h1><p class="muted">Пов'язані зі справами записи видалити не можна.</p></div></div>
+<div class="panel confirm-panel"><div class="confirm-icon">!</div><div><h2>@Model.Name</h2><p>@Model.Sub · @Model.Extra</p></div><form asp-action="Delete" method="post"><input type="hidden" name="kind" value="@Model.Kind"/><input type="hidden" name="id" value="@Model.Id"/><button class="button button-danger" type="submit">Видалити</button><a class="button button-light" asp-action="Index" asp-route-kind="@Model.Kind">Скасувати</a></form></div>

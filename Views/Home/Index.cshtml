@@ -1,0 +1,37 @@
+@model IReadOnlyList<Violation>
+@{ ViewData["Title"] = "Огляд"; }
+<div class="hero-row">
+    <div><div class="eyebrow">ПОНЕДІЛОК · РОБОЧА ПАНЕЛЬ</div><h1>Вітаємо в реєстрі</h1><p class="muted">Облік матеріалів про порушення правил дорожнього руху.</p></div>
+    <a class="button button-primary" asp-controller="Violations" asp-action="Create"><span>＋</span> Зареєструвати порушення</a>
+</div>
+
+<div class="stats-grid">
+    <article class="stat-card"><div class="stat-top"><span>Усього справ</span><span class="stat-icon indigo">▤</span></div><strong>@ViewBag.Total</strong><small>У локальному реєстрі</small></article>
+    <article class="stat-card"><div class="stat-top"><span>В роботі</span><span class="stat-icon amber">◷</span></div><strong>@ViewBag.Active</strong><small>Не закриті справи</small></article>
+    <article class="stat-card"><div class="stat-top"><span>Інспектори</span><span class="stat-icon teal">◉</span></div><strong>@ViewBag.Inspectors</strong><small>У довіднику підрозділу</small></article>
+    <article class="stat-card"><div class="stat-top"><span>Сума штрафів</span><span class="stat-icon coral">₴</span></div><strong>@(((decimal)ViewBag.Fines).ToString("N0", CultureInfo.GetCultureInfo("uk-UA"))) <i>грн</i></strong><small>За статтями в реєстрі</small></article>
+</div>
+
+<div class="section-head"><div><div class="eyebrow">ОСТАННІ ОНОВЛЕННЯ</div><h2>Нещодавні справи</h2></div><a class="text-link" asp-controller="Violations" asp-action="Index">Відкрити весь реєстр <span>→</span></a></div>
+<div class="panel table-panel">
+    <div class="table-wrap"><table>
+        <thead><tr><th>НОМЕР СПРАВИ</th><th>ВОДІЙ І ТРАНСПОРТ</th><th>МІСЦЕ</th><th>ІНСПЕКТОР</th><th>СТАТУС</th><th></th></tr></thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><a class="case-link" asp-controller="Violations" asp-action="Details" asp-route-id="@item.Id">@item.CaseNumber</a><small>@item.OccurredAt.ToString("dd.MM.yyyy · HH:mm")</small></td>
+                <td><strong>@item.DriverName</strong><small>@item.Vehicle?.PlateNumber · @item.Vehicle?.MakeModel</small></td>
+                <td>@item.Location</td>
+                <td>@(item.Inspectors.FirstOrDefault()?.FullName ?? "—")</td>
+                <td><span class="status status-@item.Status.ToString().ToLowerInvariant()">@Html.DisplayFor(_ => item.Status)</span></td>
+                <td><a class="icon-link" aria-label="Переглянути справу" asp-controller="Violations" asp-action="Details" asp-route-id="@item.Id">↗</a></td>
+            </tr>
+        }
+        </tbody>
+    </table></div>
+</div>
+<div class="home-bottom-grid">
+    <a class="quick-card" asp-controller="Catalog" asp-action="Index" asp-route-kind="inspectors"><span class="quick-icon teal">◉</span><span><strong>Довідник інспекторів</strong><small>Додавання, редагування та пошук</small></span><b>→</b></a>
+    <a class="quick-card" asp-controller="Catalog" asp-action="Index" asp-route-kind="articles"><span class="quick-icon coral">§</span><span><strong>Статті та санкції</strong><small>Каталог норм і навчальних штрафів</small></span><b>→</b></a>
+</div>

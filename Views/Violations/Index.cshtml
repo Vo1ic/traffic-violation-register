@@ -1,0 +1,29 @@
+@model ViolationList
+@{ ViewData["Title"] = "Реєстр справ"; }
+<div class="hero-row compact-hero">
+    <div><div class="eyebrow">ОБЛІК І ПОШУК</div><h1>Реєстр справ</h1><p class="muted">Перегляд матеріалів і фільтрація за інспектором, статтею та статусом.</p></div>
+    <a class="button button-primary" asp-action="Create">＋ Нова справа</a>
+</div>
+<form method="get" class="filter-panel">
+    <label class="search-field"><span>⌕</span><input name="q" value="@Model.Query" placeholder="Справа, водій, номер авто або адреса" /></label>
+    <select name="inspectorId"><option value="">Усі інспектори</option>@foreach(var officer in Model.Inspectors){<option value="@officer.Id" selected="@(Model.InspectorId == officer.Id)">@officer.FullName</option>}</select>
+    <select name="articleId"><option value="">Усі статті</option>@foreach(var article in Model.Articles){<option value="@article.Id" selected="@(Model.ArticleId == article.Id)">@article.Code · @article.Title</option>}</select>
+    <select name="status"><option value="">Усі статуси</option>@foreach(var status in Enum.GetValues<ViolationStatus>()){<option value="@status" selected="@(Model.Status == status)">@Html.DisplayFor(_ => status)</option>}</select>
+    <button class="button button-dark" type="submit">Застосувати</button>
+    <a class="reset-link" asp-action="Index">Скинути</a>
+</form>
+<div class="section-head list-head"><div><h2>Знайдено: @Model.Items.Count</h2></div></div>
+<div class="panel table-panel"><div class="table-wrap"><table>
+    <thead><tr><th>СПРАВА</th><th>ВОДІЙ / АВТОМОБІЛЬ</th><th>МІСЦЕ ПОДІЇ</th><th>ІНСПЕКТОРИ</th><th>СТАТТІ</th><th>СТАТУС</th><th></th></tr></thead>
+    <tbody>@foreach(var item in Model.Items){<tr>
+        <td><a class="case-link" asp-action="Details" asp-route-id="@item.Id">@item.CaseNumber</a><small>@item.OccurredAt.ToString("dd.MM.yyyy · HH:mm")</small></td>
+        <td><strong>@item.DriverName</strong><small>@item.Vehicle?.PlateNumber · @item.Vehicle?.MakeModel</small></td>
+        <td>@item.Location</td>
+        <td>@string.Join(", ", item.Inspectors.Select(x => x.FullName))</td>
+        <td>@string.Join(", ", item.Articles.Select(x => x.Code))</td>
+        <td><span class="status status-@item.Status.ToString().ToLowerInvariant()">@Html.DisplayFor(_ => item.Status)</span></td>
+        <td><a class="icon-link" aria-label="Переглянути" asp-action="Details" asp-route-id="@item.Id">↗</a></td>
+    </tr>}</tbody>
+</table></div>
+@if (Model.Items.Count == 0) { <div class="empty-state"><span>⌕</span><strong>За цими параметрами справ не знайдено</strong><a asp-action="Index">Очистити фільтри</a></div> }
+</div>

@@ -1,0 +1,29 @@
+@model CatalogForm
+@{ ViewData["Title"] = (string)ViewBag.Title; var editing = Model.Id != 0; var kind = Model.Kind; }
+<div class="hero-row compact-hero"><div><div class="eyebrow">ДОВІДНИК</div><h1>@ViewBag.Title</h1><p class="muted">Зміни збережуться в локальній базі даних.</p></div><a class="button button-light" asp-action="Index" asp-route-kind="@kind">← До списку</a></div>
+<form asp-action="@(editing ? "Edit" : "Create")" asp-route-id="@Model.Id" method="post" class="form-panel catalog-form">
+    <input asp-for="Kind" type="hidden" /><input asp-for="Id" type="hidden" />
+    <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+    @if(kind == "inspectors")
+    {
+        <div class="field"><label asp-for="Name">ПІБ інспектора</label><input asp-for="Name" placeholder="Наприклад, Олександр Коваль" /><span asp-validation-for="Name"></span></div>
+        <div class="field"><label asp-for="Sub">Нагрудний номер</label><input asp-for="Sub" placeholder="АІ-1401" /><span asp-validation-for="Sub"></span></div>
+        <div class="field"><label asp-for="Extra">Звання</label><input asp-for="Extra" placeholder="Лейтенант" /><span asp-validation-for="Extra"></span></div>
+        <div class="field"><label asp-for="Fourth">Підрозділ</label><input asp-for="Fourth" placeholder="Патрульний сектор №1" /><span asp-validation-for="Fourth"></span></div>
+    }
+    else if(kind == "vehicles")
+    {
+        <div class="field"><label asp-for="Name">Номерний знак</label><input asp-for="Name" placeholder="АА1234КХ" /><span asp-validation-for="Name"></span></div>
+        <div class="field"><label asp-for="Sub">Марка та модель</label><input asp-for="Sub" placeholder="Toyota Corolla" /><span asp-validation-for="Sub"></span></div>
+        <div class="field"><label asp-for="Extra">Власник</label><input asp-for="Extra" placeholder="Ім'я власника" /><span asp-validation-for="Extra"></span></div>
+        <div class="field"><label asp-for="Year">Рік випуску</label><input asp-for="Year" type="number" min="1950" max="2100" /><span asp-validation-for="Year"></span></div>
+    }
+    else
+    {
+        <div class="field"><label asp-for="Name">Код статті</label><input asp-for="Name" placeholder="12.1" /><span asp-validation-for="Name"></span></div>
+        <div class="field"><label asp-for="Sub">Назва порушення</label><input asp-for="Sub" placeholder="Опис порушення" /><span asp-validation-for="Sub"></span></div>
+        <div class="field"><label asp-for="Extra">Категорія</label><input asp-for="Extra" placeholder="Безпека" /><span asp-validation-for="Extra"></span></div>
+        <div class="field"><label asp-for="Amount">Навчальна сума штрафу, грн</label><input asp-for="Amount" type="number" min="0" step="1" /><span asp-validation-for="Amount"></span></div>
+    }
+    <div class="form-actions"><a class="button button-light" asp-action="Index" asp-route-kind="@kind">Скасувати</a><button class="button button-primary" type="submit">@(editing ? "Зберегти зміни" : "Додати до довідника")</button></div>
+</form>

@@ -1,0 +1,19 @@
+@model ViolationForm
+@{ ViewData["Title"] = Model.Id == 0 ? "Нова справа" : "Редагування справи"; var editing = Model.Id != 0; var selectedInspectors = (List<int>)ViewBag.SelectedInspectors; var selectedArticles = (List<int>)ViewBag.SelectedArticles; }
+<div class="hero-row compact-hero"><div><div class="eyebrow">МАТЕРІАЛИ СПРАВИ</div><h1>@ViewData["Title"]</h1><p class="muted">Вкажіть обставини та пов'яжіть справу з інспекторами й статтями.</p></div><a class="button button-light" asp-action="Index">← До реєстру</a></div>
+<form asp-action="@(editing ? "Edit" : "Create")" asp-route-id="@Model.Id" method="post" class="form-panel">
+    <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+    <div class="form-grid">
+        <div class="field"><label asp-for="CaseNumber"></label><input asp-for="CaseNumber" placeholder="ПДР-2026-0105" /><span asp-validation-for="CaseNumber"></span></div>
+        <div class="field"><label asp-for="OccurredAt"></label><input asp-for="OccurredAt" type="datetime-local" /><span asp-validation-for="OccurredAt"></span></div>
+        <div class="field"><label asp-for="DriverName"></label><input asp-for="DriverName" placeholder="Ім'я водія" /><span asp-validation-for="DriverName"></span></div>
+        <div class="field"><label asp-for="VehicleId"></label><select asp-for="VehicleId"><option value="0">Оберіть транспорт</option>@foreach(Vehicle v in ViewBag.Vehicles){<option value="@v.Id">@v.PlateNumber — @v.MakeModel</option>}</select><span asp-validation-for="VehicleId"></span></div>
+        <div class="field field-wide"><label asp-for="Location"></label><input asp-for="Location" placeholder="Вулиця, номер будинку або перехрестя" /><span asp-validation-for="Location"></span></div>
+        <div class="field field-wide"><label asp-for="Description"></label><textarea asp-for="Description" rows="3" placeholder="Коротко опишіть обставини"></textarea><span asp-validation-for="Description"></span></div>
+        <div class="field"><label asp-for="Status"></label><select asp-for="Status" asp-items="Html.GetEnumSelectList<ViolationStatus>()"></select><span asp-validation-for="Status"></span></div>
+        <div class="field"><label>Інспектори <em>*</em></label><div class="choice-list">@foreach(Inspector o in ViewBag.Inspectors){<label class="choice"><input type="checkbox" name="InspectorIds" value="@o.Id" checked="@selectedInspectors.Contains(o.Id)" /><span><strong>@o.FullName</strong><small>@o.Rank · №@o.BadgeNumber</small></span></label>}</div><span asp-validation-for="InspectorIds"></span></div>
+        <div class="field field-wide"><label>Статті порушення <em>*</em></label><div class="article-choices">@foreach(OffenseArticle a in ViewBag.Articles){<label class="article-choice"><input type="checkbox" name="ArticleIds" value="@a.Id" checked="@selectedArticles.Contains(a.Id)" /><span class="article-code">@a.Code</span><span class="article-copy"><strong>@a.Title</strong><small>@a.Category</small></span><b>@a.FineAmount.ToString("N0", CultureInfo.GetCultureInfo("uk-UA")) ₴</b></label>}</div><span asp-validation-for="ArticleIds"></span></div>
+    </div>
+    <div class="form-actions"><a class="button button-light" asp-action="Index">Скасувати</a><button class="button button-primary" type="submit">@(editing ? "Зберегти зміни" : "Зареєструвати справу")</button></div>
+</form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

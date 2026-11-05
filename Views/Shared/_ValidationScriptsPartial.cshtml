@@ -1,0 +1,12 @@
+<script>
+document.querySelectorAll('form').forEach(form => form.addEventListener('submit', event => {
+    const selectedInspector = form.querySelectorAll('input[name="InspectorIds"]:checked').length;
+    const selectedArticle = form.querySelectorAll('input[name="ArticleIds"]:checked').length;
+    if (form.querySelector('[name="InspectorIds"]') && (!selectedInspector || !selectedArticle)) {
+        event.preventDefault();
+        form.querySelector('.validation-summary').textContent = !selectedInspector
+            ? 'Оберіть хоча б одного інспектора.' : 'Оберіть хоча б одну статтю.';
+        form.querySelector('.validation-summary').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+}));
+</script>

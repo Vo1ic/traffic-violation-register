@@ -1,0 +1,4 @@
+@model Violation
+@{ ViewData["Title"] = "Видалення справи"; }
+<div class="hero-row compact-hero"><div><div class="eyebrow">ПІДТВЕРДЖЕННЯ</div><h1>Видалити справу?</h1><p class="muted">Цю дію не можна скасувати.</p></div></div>
+<div class="panel confirm-panel"><div class="confirm-icon">!</div><div><h2>@Model.CaseNumber</h2><p>@Model.DriverName · @Model.Vehicle?.PlateNumber · @Model.Location</p><span class="status status-@Model.Status.ToString().ToLowerInvariant()">@Html.DisplayFor(x => x.Status)</span></div><form asp-action="Delete" method="post"><input type="hidden" name="id" value="@Model.Id" /><button class="button button-danger" type="submit">Видалити справу</button><a class="button button-light" asp-action="Details" asp-route-id="@Model.Id">Скасувати</a></form></div>

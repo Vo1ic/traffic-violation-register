@@ -14,10 +14,10 @@
 
 ## Запуск
 
-Потрібен .NET 8 SDK. У PowerShell з каталогу `purch` запустіть:
+Потрібен .NET 8 SDK. У PowerShell з кореня репозиторію запустіть:
 
 ```powershell
-dotnet run --project .\traffic-violation-register\TrafficRegister.csproj --urls http://localhost:5080
+dotnet run --project .\TrafficRegister.csproj --urls http://localhost:5080
 ```
 
 Відкрийте `http://localhost:5080`. Під час першого запуску застосунок створює SQLite базу `App_Data/traffic-register.db` і додає демонстраційні записи. Щоб почати з чистими даними, зупиніть сайт і видаліть цей файл: під час наступного запуску база створиться повторно.
@@ -30,6 +30,6 @@ dotnet run --project .\traffic-violation-register\TrafficRegister.csproj --urls 
 - `wwwroot/` — стилі й скрипти.
 - `App_Data/` — локальна база даних, не включена до Git.
 
-Реалізація використовує ASP.NET Core MVC 8, Entity Framework Core та SQLite. Умови орієнтовані на ASP.NET MVC 5; тут застосовано сучасний варіант тієї самої архітектури MVC. Один звіт для обох робіт розміщено в `../Report_variant13.txt`.
+Реалізація використовує ASP.NET Core MVC 8, Entity Framework Core та SQLite. Умови орієнтовані на ASP.NET MVC 5; тут застосовано сучасний варіант тієї самої архітектури MVC.
 
 GitHub профіль автора: [github.com/Vo1ic](https://github.com/Vo1ic). Запропонована назва репозиторію: `traffic-violation-register`.
